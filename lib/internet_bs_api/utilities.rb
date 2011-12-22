@@ -23,7 +23,7 @@ module InternetBsApi
     end
 
     def validate_phone_number(phone_number)
-      !(phone_number =~ /^\+\d{1,3}\.\d{1,12}+$/)
+      !(phone_number =~ /^\+\d{1,3}\.\d{1,12}$/)
     end
 
     def validate_email(email_address)
