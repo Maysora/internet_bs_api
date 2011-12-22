@@ -1,6 +1,6 @@
-require "#{Rails.root}/lib/internet_bs_api/connection.rb"
-require "#{Rails.root}/lib/internet_bs_api/exceptions.rb"
-require "#{Rails.root}/lib/internet_bs_api/utilities.rb"
+require "#{File.dirname(__FILE__)}/connection.rb"
+require "#{File.dirname(__FILE__)}/exceptions.rb"
+require "#{File.dirname(__FILE__)}/utilities.rb"
 
 module InternetBsApi
   module Account
@@ -25,7 +25,6 @@ module InternetBsApi
     #  balance_1_amount=9899378.64
     #
     def get_balance(currency_optional)
-      connection = Connection.new
       options = {}
       options["Currency"] = currency_optional if not currency_optional.blank?
       connection.post("Account/Balance/Get", options)
@@ -48,7 +47,6 @@ module InternetBsApi
     #  currency=USD
     #
     def get_default_currency
-      connection = Connection.new
       connection.post("Account/DefaultCurrency/Get", {})
     end
 
@@ -71,7 +69,6 @@ module InternetBsApi
     def set_default_currency(currency)
       validate_list([["Currency", currency, :presence]])
 
-      connection = Connection.new
       options = {"Currency" => currency}
       connection.post("Account/DefaultCurrency/Set", options)
     end
@@ -96,7 +93,6 @@ module InternetBsApi
     #  status=SUCCESS
     #
     def get_configuration
-      connection = Connection.new
       connection.post("Account/Configuration/Get", {})
     end
 
@@ -137,7 +133,6 @@ module InternetBsApi
         "ResellerWhoisHeader" => reseller_whois_header,
         "ResellerWhoisFooter" => reseller_whois_footer
       }
-      connection = Connection.new
       connection.post("Account/Configuration/Set", options)
     end
 
@@ -176,7 +171,6 @@ module InternetBsApi
       options["discountCode"] = discount_code_optional if discount_code_optional
       options["Currency"] = currency_optional if currency_optional
       options["version"] = version_optional if version_optional
-      connection = Connection.new
       connection.post("Account/PriceList/Get", options)
     end
 
@@ -202,7 +196,6 @@ module InternetBsApi
       options["ClientTransactionId"] = client_transaction_id_optional if client_transaction_id_optional
       options["ResponseType"] = response_type_optional if response_type_optional
 
-      connection = Connection.new
       connection.post("Account/TransactionInfo/Get", options)
     end
   end

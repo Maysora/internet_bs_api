@@ -8,9 +8,30 @@ require 'internet_bs_api/account'
 require 'internet_bs_api/url_forward'
 require 'internet_bs_api/email_forward'
 
-SETTINGS = YAML.load_file(File.join(Rails.root, "config", "internet_bs_api.yaml"))
-
 module InternetBsApi
-  include Account
-  include Domain
+  
+  class Base
+    include InternetBsApi::Account
+    include InternetBsApi::Domain
+    include InternetBsApi::Utilities
+
+    attr_reader :connection
+
+    DEFAULT_OPTIONS = {
+      :response_format => "JSON",
+      :test_mode => false,
+      :url_base => "https://api.internet.bs/",
+      :test_url_base => "https://testapi.internet.bs/",
+      :api_key => "testapi",
+      :password => "testpass"
+    }
+
+    def initialize options={}
+      options = DEFAULT_OPTIONS.merge options
+      options[:url_base] = options[:test_url_base] if options[:test_mode]
+      @connection = Connection.new options
+    end
+    
+  end
+
 end

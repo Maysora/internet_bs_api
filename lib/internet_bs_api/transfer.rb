@@ -1,6 +1,6 @@
-require "#{Rails.root}/lib/internet_bs_api/connection.rb"
-require "#{Rails.root}/lib/internet_bs_api/exceptions.rb"
-require "#{Rails.root}/lib/internet_bs_api/utilities.rb"
+require "#{File.dirname(__FILE__)}/connection.rb"
+require "#{File.dirname(__FILE__)}/exceptions.rb"
+require "#{File.dirname(__FILE__)}/utilities.rb"
 
 module InternetBsApi
   module Domain
@@ -53,7 +53,6 @@ module InternetBsApi
       ]
       options = set_optional_fields(optional_fields, options)
 
-      connection = Connection.new
       connection.post("Domain/Transfer/Initiate", options)
     end
 
@@ -77,7 +76,6 @@ module InternetBsApi
       validate_list([ ["Domain", domain, :domain_format] ])
       options = { "Domain" => domain }
 
-      connection = Connection.new
       connection.post("Domain/Transfer/Cancel", options)
     end
 
@@ -105,7 +103,6 @@ module InternetBsApi
       validate_list([ ["Domain", domain, :domain_format] ])
       options = { "Domain" => domain }
 
-      connection = Connection.new
       connection.post("Domain/Transfer/ResendAuthEmail", options)
     end
 
@@ -148,7 +145,6 @@ module InternetBsApi
       validate_list([ ["Domain", domain, :domain_format] ])
       options = { "Domain" => domain }
 
-      connection = Connection.new
       connection.post("Domain/Transfer/History", options)
     end
 
@@ -178,7 +174,6 @@ module InternetBsApi
       optional_fields = [ ["transferAuthInfo", transfer_auth_info_optional] ]
       options = set_optional_fields(optional_fields, options)
 
-      connection = Connection.new
       connection.post("Domain/Transfer/Retry", options)
     end
 
@@ -208,7 +203,6 @@ module InternetBsApi
       validate_list([ ["Domain", domain, :domain_format] ])
       options = { "Domain" => domain }
 
-      connection = Connection.new
       connection.post("Domain/TransferAway/Approve", options)
     end
 
@@ -238,7 +232,6 @@ module InternetBsApi
       validate_list([ ["Domain", domain, :domain_format], ["Reason", reason, :presence ] ])
       options = { "Domain" => domain, "Reason" => reason }
 
-      connection = Connection.new
       connection.post("Domain/TransferAway/Reject", options)
     end
   end

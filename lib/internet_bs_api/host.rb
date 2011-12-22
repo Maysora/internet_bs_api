@@ -1,6 +1,6 @@
-require "#{Rails.root}/lib/internet_bs_api/connection.rb"
-require "#{Rails.root}/lib/internet_bs_api/exceptions.rb"
-require "#{Rails.root}/lib/internet_bs_api/utilities.rb"
+require "#{File.dirname(__FILE__)}/connection.rb"
+require "#{File.dirname(__FILE__)}/exceptions.rb"
+require "#{File.dirname(__FILE__)}/utilities.rb"
 
 module InternetBsApi
   module Domain
@@ -42,7 +42,6 @@ module InternetBsApi
       validate_list([["Host", host, :presence], ["IP_List", ip_list, :presence]])
       options = {"Host" => host, "IP_List" => ip_list}
 
-      connection = Connection.new
       connection.post("Domain/Host/Create", options)
     end
 
@@ -78,7 +77,6 @@ module InternetBsApi
       validate_list([["Host", host, :presence], ["IP_List", ip_list, :presence]])
       options = {"Host" => host, "IP_List" => ip_list}
 
-      connection = Connection.new
       connection.post("Domain/Host/Update", options)
     end
 
@@ -110,7 +108,6 @@ module InternetBsApi
       validate_list([["Host", host, :presence]])
       options = {"Host" => host}
 
-      connection = Connection.new
       connection.post("Domain/Host/Info", options)
     end
 
@@ -133,7 +130,6 @@ module InternetBsApi
       validate_list([["Host", host, :presence]])
       options = {"Host" => host}
 
-      connection = Connection.new
       connection.post("Domain/Host/Delete", options)
     end
 
@@ -189,7 +185,6 @@ module InternetBsApi
       optional_fields = [ ["compact_list_optional", compact_list_optional] ]
       options = set_optional_fields(optional_fields, options)
 
-      connection = Connection.new
       connection.post("Domain/Host/List", options)
     end
   end

@@ -1,6 +1,6 @@
-require "#{Rails.root}/lib/internet_bs_api/connection.rb"
-require "#{Rails.root}/lib/internet_bs_api/exceptions.rb"
-require "#{Rails.root}/lib/internet_bs_api/utilities.rb"
+require "#{File.dirname(__FILE__)}/connection.rb"
+require "#{File.dirname(__FILE__)}/exceptions.rb"
+require "#{File.dirname(__FILE__)}/utilities.rb"
 
 module InternetBsApi
   module Domain
@@ -34,7 +34,6 @@ module InternetBsApi
       options = { "Domain" => domain }
       options["type"] = type_optional if type_optional
 
-      connection = Connection.new
       connection.post("Domain/PrivateWhois/Enable", options)
     end
 
@@ -67,7 +66,6 @@ module InternetBsApi
       validate_list([ ["Domain", domain, :domain_format] ])
       options = { "Domain" => domain }
 
-      connection = Connection.new
       connection.post("Domain/PrivateWhois/Disable", options)
     end
 
@@ -100,7 +98,6 @@ module InternetBsApi
       validate_list([ ["Domain", domain, :domain_format] ])
       options = { "Domain" => domain }
 
-      connection = Connection.new
       connection.post("Domain/PrivateWhois/Status", options)
     end
   end

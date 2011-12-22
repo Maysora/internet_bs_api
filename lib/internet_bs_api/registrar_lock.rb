@@ -1,6 +1,6 @@
-require "#{Rails.root}/lib/internet_bs_api/connection.rb"
-require "#{Rails.root}/lib/internet_bs_api/exceptions.rb"
-require "#{Rails.root}/lib/internet_bs_api/utilities.rb"
+require "#{File.dirname(__FILE__)}/connection.rb"
+require "#{File.dirname(__FILE__)}/exceptions.rb"
+require "#{File.dirname(__FILE__)}/utilities.rb"
 
 module InternetBsApi
   module Domain
@@ -33,7 +33,6 @@ module InternetBsApi
       validate_list([ ["Domain", domain, :domain_format] ])
       options = { "Domain" => domain }
 
-      connection = Connection.new
       connection.post("Domain/RegistrarLock/Enable", options)
     end
 
@@ -66,7 +65,6 @@ module InternetBsApi
       validate_list([ ["Domain", domain, :domain_format] ])
       options = { "Domain" => domain }
 
-      connection = Connection.new
       connection.post("Domain/RegistrarLock/Disable", options)
     end
 
@@ -99,7 +97,6 @@ module InternetBsApi
       validate_list([ ["Domain", domain, :domain_format] ])
       options = { "Domain" => domain }
 
-      connection = Connection.new
       connection.post("Domain/RegistrarLock/Status", options)
     end
   end

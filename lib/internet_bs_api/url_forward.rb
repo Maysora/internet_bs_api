@@ -1,6 +1,6 @@
-require "#{Rails.root}/lib/internet_bs_api/connection.rb"
-require "#{Rails.root}/lib/internet_bs_api/exceptions.rb"
-require "#{Rails.root}/lib/internet_bs_api/utilities.rb"
+require "#{File.dirname(__FILE__)}/connection.rb"
+require "#{File.dirname(__FILE__)}/exceptions.rb"
+require "#{File.dirname(__FILE__)}/utilities.rb"
 
 module InternetBsApi
   module Domain
@@ -35,7 +35,6 @@ module InternetBsApi
       ]
       options = set_optional_fields(optional_fields, options)
 
-      connection = Connection.new
       connection.post("Domain/UrlForward/Add", options)
     end
 
@@ -57,7 +56,6 @@ module InternetBsApi
       validate_list( [ ["Source", source, :url_format] ])
       options = {"Source" => source}
 
-      connection = Connection.new
       connection.post("Domain/UrlForward/Remove", options)
     end
 
@@ -101,7 +99,6 @@ module InternetBsApi
       ]
       options = set_optional_fields(optional_fields, options)
 
-      connection = Connection.new
       connection.post("Domain/UrlForward/Update", options)
     end
 
@@ -150,7 +147,6 @@ module InternetBsApi
       optional_fields = [ ["rangeFrom", range_from_optional], ["rangeTo", range_to_optional] ]
       options = set_optional_fields(optional_fields, options)
 
-      connection = Connection.new
       connection.post("Domain/UrlForward/List", options)
     end
   end

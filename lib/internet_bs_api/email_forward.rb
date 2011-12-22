@@ -1,6 +1,6 @@
-require "#{Rails.root}/lib/internet_bs_api/connection.rb"
-require "#{Rails.root}/lib/internet_bs_api/exceptions.rb"
-require "#{Rails.root}/lib/internet_bs_api/utilities.rb"
+require "#{File.dirname(__FILE__)}/connection.rb"
+require "#{File.dirname(__FILE__)}/exceptions.rb"
+require "#{File.dirname(__FILE__)}/utilities.rb"
 
 module InternetBsApi
   module Domain
@@ -29,7 +29,6 @@ module InternetBsApi
         "Destination" => destination
       }
 
-      connection = Connection.new
       connection.post("Domain/EmailForward/Add", options)
     end
 
@@ -52,7 +51,6 @@ module InternetBsApi
 
       options = { "Source" => source }
 
-      connection = Connection.new
       connection.post("Domain/EmailForward/Remove", options)
     end
 
@@ -80,7 +78,6 @@ module InternetBsApi
         "Destination" => destination
       }
 
-      connection = Connection.new
       connection.post("Domain/EmailForward/Update", options)
     end
 
@@ -112,7 +109,6 @@ module InternetBsApi
       optional_fields = [ ["rangeFrom", range_from_optional], ["rangeTo", range_to_optional] ]
       options = set_optional_fields(optional_fields, options)
 
-      connection = Connection.new
       connection.post("Domain/EmailForward/List", options)
     end
   end

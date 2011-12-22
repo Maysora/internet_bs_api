@@ -1,9 +1,0 @@
-internet_bs_api:
-  response_format: JSON
-  test_mode: true
-  url_base: "https://api.internet.bs/"
-  api_key: "replace_me"
-  password: "replace_me"
-  test_url_base: "https://testapi.internet.bs/"
-  test_password: "testpass"
-  test_api_key: "testapi"

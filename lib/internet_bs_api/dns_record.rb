@@ -1,6 +1,6 @@
-require "#{Rails.root}/lib/internet_bs_api/connection.rb"
-require "#{Rails.root}/lib/internet_bs_api/exceptions.rb"
-require "#{Rails.root}/lib/internet_bs_api/utilities.rb"
+require "#{File.dirname(__FILE__)}/connection.rb"
+require "#{File.dirname(__FILE__)}/exceptions.rb"
+require "#{File.dirname(__FILE__)}/utilities.rb"
 
 module InternetBsApi
   module Domain
@@ -19,7 +19,7 @@ module InternetBsApi
     #  transactid=c283a85cc044c43585a13ebb1e701002
     #  status=SUCCESS
     #
-    def add_dns_record(full_record_name, type, value, ttl_optional, priority_optional, dyn_dns_login, dyn_dns_password)
+    def add_dns_record(full_record_name, type, value, ttl_optional=nil, priority_optional=nil, dyn_dns_login=nil, dyn_dns_password=nil)
       validate_list([["FullRecordName", full_record_name, :presence],
         ["Type", type, :dns_record_type],
         ["Value", value, :presence],
@@ -40,7 +40,6 @@ module InternetBsApi
       ]
       options = set_optional_fields(optional_fields, options)
 
-      connection = Connection.new
       connection.post("Domain/DnsRecord/Add", options)
     end
 
@@ -80,7 +79,6 @@ module InternetBsApi
       optional_fields = [ ["Value", value_optional], ["Ttl", ttl_optional], ["Priority", priority_optional]]
       options = set_optional_fields(optional_fields, options)
 
-      connection = Connection.new
       connection.post("Domain/DnsRecord/Remove", options)
     end
 
@@ -127,7 +125,6 @@ module InternetBsApi
       ]
       options = set_optional_fields(optional_fields, options)
 
-      connection = Connection.new
       connection.post("Domain/DnsRecord/Update", options)
     end
 
@@ -154,7 +151,7 @@ module InternetBsApi
     #  records_2_ttl=3600
     #  records_2_type=CNAME
     #
-    def list_dns_records(domain, filter_type_optional)
+    def list_dns_records(domain, filter_type_optional=nil)
       validate_list([["Domain", domain, :domain_format]])
       options = { "Domain" => domain }
 
@@ -162,7 +159,6 @@ module InternetBsApi
       optional_fields = [ ["FilterType", filter_type_optional] ]
       options = set_optional_fields(optional_fields, options)
 
-      connection = Connection.new
       connection.post("Domain/DnsRecord/List", options)
     end
 

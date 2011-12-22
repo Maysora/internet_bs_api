@@ -1,6 +1,6 @@
-require "#{Rails.root}/lib/internet_bs_api/connection.rb"
-require "#{Rails.root}/lib/internet_bs_api/exceptions.rb"
-require "#{Rails.root}/lib/internet_bs_api/utilities.rb"
+require "#{File.dirname(__FILE__)}/connection.rb"
+require "#{File.dirname(__FILE__)}/exceptions.rb"
+require "#{File.dirname(__FILE__)}/utilities.rb"
 
 module InternetBsApi
   module Domain
@@ -37,7 +37,6 @@ module InternetBsApi
       # validation
       validate_list([ ["Domain", domain_name_with_tld, :domain_format] ])
 
-      connection = Connection.new
       options = {"Domain" => domain_name_with_tld}
       connection.post("Domain/Check", options)
     end
@@ -78,15 +77,15 @@ module InternetBsApi
     #  product_0_domain=example.com
     #  product_0_expiration=2010/04/02
     #
-    def create_domain(domain_name_with_tld, contacts_optional, clone_contact_domain_optional)
+    def create_domain(domain_name_with_tld, contacts_or_clone_contact, options={})
       # validation
       validate_list([ ["Domain", domain_name_with_tld, :domain_format] ])
+      contacts_optional = contacts_or_clone_contact.is_a?(Array) ? contacts_or_clone_contact : nil
+      clone_contact_domain_optional = contacts_or_clone_contact.is_a?(String) ? contacts_or_clone_contact : nil
       if contacts_optional.nil? && check_domain_format(clone_contact_domain_optional) == false
-        raise InvalidInputParameters.new("You must provide either valid contacts or a valid contact clone domain parameter")
+        raise InternetBsApi::InvalidInputParameters.new("You must provide either valid contacts or a valid contact clone domain parameter")
       end
 
-      connection = Connection.new
-      options = {}
       if contacts_optional
         contacts_optional.each do |co|
           options.merge!(co.to_options)
@@ -125,10 +124,9 @@ module InternetBsApi
       # validation
       validate_list([ ["Domain", domain_name_with_tld, :domain_format] ])
       if contacts_optional.nil? && check_domain_format(clone_contact_domain_optional) == false
-        raise InvalidInputParameters.new("You must provide either valid contacts or a valid contact clone domain parameter")
+        raise InternetBsApi::InvalidInputParameters.new("You must provide either valid contacts or a valid contact clone domain parameter")
       end
 
-      connection = Connection.new
       options = {}
       if contacts_optional
         contacts_optional.each do |co|
@@ -167,7 +165,6 @@ module InternetBsApi
     def renew_domain(domain_name_with_tld, period_optional, discount_code_optional)
       validate_list([ ["Domain", domain_name_with_tld, :domain_format] ])
 
-      connection = Connection.new
       options = {}
       options["Period"] = period_optional if period_optional
       options["DiscountCode"] = discount_code_optional if discount_code_optional
@@ -296,7 +293,6 @@ module InternetBsApi
                      sort_by_optional,
                      extension_filter_optional)
 
-      connection = Connection.new
       options = {}
       options["ExpiringOnly"] = expiring_only_optional if expiring_only_optional
       options["PendingTransferOnly"] = pending_transfer_only_optional if pending_transfer_only_optional
@@ -331,11 +327,10 @@ module InternetBsApi
     #
     def registry_status(domain_name_with_tld)
       if check_domain_format(domain_name_with_tld) == false
-        raise InvalidInputParameters.new("Invalid domain format. Please use this format: example.net")
+        raise InternetBsApi::InvalidInputParameters.new("Invalid domain format. Please use this format: example.net")
       end
 
       options = {"Domain" => domain_name_with_tld}
-      connection = Connection.new
       connection.post("Domain/RegistryStatus", options)
     end
 
@@ -364,12 +359,11 @@ module InternetBsApi
     #
     def push_domain(domain_name_with_tld, destination)
       if destination.nil? && check_domain_format(domain_name_with_tld) == false
-        raise InvalidInputParameters.new("Destination is a required parameter") if destination.nil?
-        raise InvalidInputParameters.new("Invalid domain format. Please use this format: example.net")
+        raise InternetBsApi::InvalidInputParameters.new("Destination is a required parameter") if destination.nil?
+        raise InternetBsApi::InvalidInputParameters.new("Invalid domain format. Please use this format: example.net")
       end
 
       options = {"Domain" => domain_name_with_tld, "Destination" => destination}
-      connection = Connection.new
       connection.post("Domain/Push", options)
     end
 
@@ -410,7 +404,6 @@ module InternetBsApi
     #
     def count_domains
       options = {}
-      connection = Connection.new
       connection.post("Domain/Count", options)
     end
   end
